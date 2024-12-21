@@ -19,7 +19,7 @@ app.use('/api', router);
 
 // Test route
 const test = async (req: Request, res: Response) => {
- res.send('assignment-3 server is running')
+ res.send('Blog project server is running')
 };
 
 app.get('/', test);

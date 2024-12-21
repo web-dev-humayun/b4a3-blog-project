@@ -6,6 +6,7 @@ import { BlogPost } from './blog.model';
 import QueryBuilder from '../../builder/QueryBuilder';
 
 const createBlogIntoDB = async (payload: TBlog) => {
+
   // console.log(payload);
   const isBlogAlreadyExist = await BlogPost.findOne({ title: payload.title });
   // console.log('isBlogAlreadyExist' , isBlogAlreadyExist)
@@ -31,6 +32,12 @@ const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
 };
 
 const updateBlogFromDb = async (id: string, payload: Partial<TBlog>) => {
+  const receivedEmail = currentUserEmail;
+
+  const findUser = await UserRegister.findOne({ email: receivedEmail });
+  if(findUser?.role==='admin'){
+    throw new Error('Admin Cannot Update Any Blog !')
+  }
   const result = await BlogPost.findByIdAndUpdate({ _id: id }, payload, {
     new: true,
   });
