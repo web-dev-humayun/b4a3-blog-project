@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TRegisterUser, UserModel } from './auth.interface';
+import { TRegisterUser } from './auth.interface';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 
@@ -18,6 +18,7 @@ const userRegisterSchema = new Schema<TRegisterUser>(
 );
 
 userRegisterSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
   // hashing password and save into DB
 

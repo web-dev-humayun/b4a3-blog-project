@@ -49,32 +49,12 @@ const updateBlogFromDb = async (id: string, payload: Partial<TBlog>) => {
   return result;
 };
 
-// const deleteBlogFromDb = async (id: string) => {
-//   const receivedEmail = currentUserEmail;
-//   console.log(receivedEmail);
-//   const findUser = await UserRegister.findOne({ email: receivedEmail });
-
-//   // console.log('findUser', findUser);
-//   const { _id:findUserId } = findUser;
-//   // console.log('user id',_id)
-
-//   const myBlogs = await BlogPost.find({ author: _id });
-//   // console.log('my blogs', myBlogs)
-
-//   const matchBlog = myBlogs.forEach((blog)=>blog._id===id)
-
-//   const result = await BlogPost.findByIdAndDelete(id);
-//   return result;
-// };
-
-
 const deleteBlogFromDb = async (id: string) => {
   const receivedEmail = currentUserEmail;
-  // console.log(receivedEmail);
 
   const findUser = await UserRegister.findOne({ email: receivedEmail });
   if (!findUser) {
-    throw new Error("User not found ! You want to login first !! ");
+    throw new Error("You want to login first !! ");
   }
 
   const { _id: findUserId } = findUser;
