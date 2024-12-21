@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TRegisterUser } from './auth.interface';
+import { TRegisterUser, UserModel } from './auth.interface';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 
@@ -47,7 +47,7 @@ userRegisterSchema.statics.isPasswordMatched = async function (
 };
 
 // Create and export the User model
-export const UserRegister = model<TRegisterUser>(
+export const UserRegister = model<TRegisterUser,UserModel>(
   'Users',
   userRegisterSchema,
 );

@@ -8,7 +8,7 @@ const blogPostSchema = new Schema<TBlog>(
     content: { type: String, required: true },
     author: {
       type: Schema.Types.ObjectId,
-      ref:"UserRegister"
+      ref:"Users"
     },
   },
   {
