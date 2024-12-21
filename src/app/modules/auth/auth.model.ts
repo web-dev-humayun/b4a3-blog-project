@@ -46,7 +46,7 @@ userRegisterSchema.statics.isPasswordMatched = async function (
 };
 
 // Create and export the User model
-export const UserRegister = model<TRegisterUser, UserModel>(
+export const UserRegister = model<TRegisterUser>(
   'Users',
   userRegisterSchema,
 );
