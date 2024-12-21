@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import config from '../config';
 import AppError from '../errors/AppError';
@@ -10,7 +12,7 @@ import { TUserRole } from '../modules/auth/auth.interface';
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
-    console.log('Required Roles:', requiredRoles);
+    // console.log('Required Roles:', requiredRoles);
 
     // checking if the token is missing
     if (!token) {
@@ -24,11 +26,11 @@ const auth = (...requiredRoles: TUserRole[]) => {
     ) as JwtPayload;
 
     const { email } = decoded;
-    console.log('Decoded Email:', email);
+    // console.log('Decoded Email:', email);
 
     // checking if the user exists
     const user = await UserRegister.isUserExistsEmail(email);
-    console.log('User Exists Data:', user);
+    // console.log('User Exists Data:', user);
 
     if (!user) {
       throw new AppError(StatusCodes.NOT_FOUND, 'This user is not found!');

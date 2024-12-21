@@ -14,7 +14,7 @@ const blockUserByAdminIntoDb = async (userId: string) => {
 const deleteBlogByAdminIntoDb = async (id: string) => {
   const receivedEmail = currentUserEmail;
   const findUser = await UserRegister.findOne({ email: receivedEmail });
-  console.log(findUser)
+  // console.log(findUser)
   if(findUser?.role!=='admin'){
     throw new Error('You are not an admin !')
   }

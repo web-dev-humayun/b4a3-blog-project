@@ -11,7 +11,7 @@ const createBlog = catchAsync(async (req, res) => {
   const receivedEmail = currentUserEmail;
 
   const findUser = await UserRegister.findOne({ email: receivedEmail });
-  console.log(receivedEmail);
+  // console.log(receivedEmail);
 
   // Check if user is found
   if (!findUser) {

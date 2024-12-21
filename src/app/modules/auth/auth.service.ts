@@ -12,7 +12,7 @@ const loginUser = async (payload: TLoginUser) => {
 
   const user = await UserRegister.isUserExistsEmail(payload?.email)
 
-  console.log("user",user);
+  // console.log("user",user);
 
   if (!user) {
     throw new AppError(StatusCodes.NOT_FOUND, 'This user is not found !');
@@ -37,7 +37,7 @@ const loginUser = async (payload: TLoginUser) => {
     role: user.role,
   };
 
-  console.log(jwtPayload);
+  // console.log(jwtPayload);
 
   const accessToken = createToken(
     jwtPayload,
