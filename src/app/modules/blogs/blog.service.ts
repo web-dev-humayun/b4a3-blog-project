@@ -1,12 +1,15 @@
+import mongoose from 'mongoose';
+import { UserRegister } from '../auth/auth.model';
+import { currentUserEmail } from '../auth/auth.utils';
 import { TBlog } from './blog.interface';
 import { BlogPost } from './blog.model';
 
 const createBlogIntoDB = async (payload: TBlog) => {
-  console.log(payload);
-  const isBlogAlreadyExist =await BlogPost.findOne({ title: payload.title });
+  // console.log(payload);
+  const isBlogAlreadyExist = await BlogPost.findOne({ title: payload.title });
   // console.log('isBlogAlreadyExist' , isBlogAlreadyExist)
-  if(isBlogAlreadyExist){
-    throw new Error('This Blog Already Exist ! ')
+  if (isBlogAlreadyExist) {
+    throw new Error('This Blog Already Exist ! ');
   }
   const result = await BlogPost.create(payload);
   return result;
@@ -15,6 +18,7 @@ const createBlogIntoDB = async (payload: TBlog) => {
 const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
   const { search, sortBy = 'createdAt', sortOrder = 'desc', filter } = query;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mongoQuery: Record<string, any> = {};
 
   if (search) {
@@ -26,7 +30,7 @@ const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
   }
 
   if (filter) {
-    mongoQuery['author.author_id'] = filter;
+    mongoQuery['author'] = filter;
   }
 
   const sortCriteria: Record<string, 1 | -1> = {
@@ -45,8 +49,48 @@ const updateBlogFromDb = async (id: string, payload: Partial<TBlog>) => {
   return result;
 };
 
+// const deleteBlogFromDb = async (id: string) => {
+//   const receivedEmail = currentUserEmail;
+//   console.log(receivedEmail);
+//   const findUser = await UserRegister.findOne({ email: receivedEmail });
+
+//   // console.log('findUser', findUser);
+//   const { _id:findUserId } = findUser;
+//   // console.log('user id',_id)
+
+//   const myBlogs = await BlogPost.find({ author: _id });
+//   // console.log('my blogs', myBlogs)
+
+//   const matchBlog = myBlogs.forEach((blog)=>blog._id===id)
+
+//   const result = await BlogPost.findByIdAndDelete(id);
+//   return result;
+// };
+
+
 const deleteBlogFromDb = async (id: string) => {
-  console.log(id);
+  const receivedEmail = currentUserEmail;
+  // console.log(receivedEmail);
+
+  const findUser = await UserRegister.findOne({ email: receivedEmail });
+  if (!findUser) {
+    throw new Error("User not found ! You want to login first !! ");
+  }
+
+  const { _id: findUserId } = findUser;
+
+  const myBlogs = await BlogPost.find({ author: findUserId });
+  if (!myBlogs || myBlogs.length === 0) {
+    throw new Error("No blogs found for this user");
+  }
+
+  const matchBlog = myBlogs.find((blog) => blog._id.equals(new mongoose.Types.ObjectId(id)));
+
+  // console.log(matchBlog)
+  if (!matchBlog) {
+    throw new Error("This Blog Blog does not belong for you ! ");
+  }
+
   const result = await BlogPost.findByIdAndDelete(id);
   return result;
 };
